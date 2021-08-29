@@ -1,16 +1,9 @@
-/**
- * particle_filter.h
- * 2D particle filter class.
- *
- * Created on: Dec 12, 2016
- * Author: Tiffany Huang
- */
-
 #ifndef PARTICLE_FILTER_H_
 #define PARTICLE_FILTER_H_
 
 #include <string>
 #include <vector>
+#include <random>
 #include "helper_functions.h"
 
 struct Particle {
@@ -25,10 +18,8 @@ struct Particle {
 };
 
 
-class ParticleFilter {    
+class ParticleFilter {  
  public:
-  
-  
   // Constructor
   // @param num_particles Number of particles
   ParticleFilter() : num_particles(0), is_initialized(false) {}
@@ -58,16 +49,7 @@ class ParticleFilter {
    */
   void prediction(double delta_t, double std_pos[], double velocity, 
                   double yaw_rate);
-  
-  /**
-   * dataAssociation Finds which observations correspond to which landmarks 
-   *   (likely by using a nearest-neighbors data association).
-   * @param predicted Vector of predicted landmark observations
-   * @param observations Vector of landmark observations
-   */
-  void dataAssociation(std::vector<LandmarkObs> predicted, 
-                       std::vector<LandmarkObs>& observations);
-  
+   
   /**
    * updateWeights Updates the weights for each particle based on the likelihood
    *   of the observed measurements. 
@@ -91,7 +73,7 @@ class ParticleFilter {
    * Set a particles list of associations, along with the associations'
    *   calculated world x,y coordinates
    * This can be a very useful debugging tool to make sure transformations 
-   *   are correct and assocations correctly connected
+   *   are correct and associations correctly connected
    */
   void SetAssociations(Particle& particle, const std::vector<int>& associations,
                        const std::vector<double>& sense_x, 
@@ -122,6 +104,9 @@ class ParticleFilter {
   
   // Vector of weights of all particles
   std::vector<double> weights; 
+
+  // random noise engine
+  std::default_random_engine gen;
 };
 
 #endif  // PARTICLE_FILTER_H_
